@@ -10,7 +10,8 @@ public interface Motor {
 	public enum Type {
 		SINGLE("Single-use", "Single-use solid propellant motor"), 
 		RELOAD("Reloadable", "Reloadable solid propellant motor"), 
-		HYBRID("Hybrid", "Hybrid rocket motor engine"), 
+		HYBRID("Hybrid", "Hybrid rocket motor engine"),
+		LIQUID("Liquid","Liquid-fueled rocket motor"),
 		UNKNOWN("Unknown", "Unknown motor type");
 				
 				
