@@ -155,7 +155,9 @@ public class ComponentAddButtons extends JPanel implements Scrollable {
 				//// Bulkhead
 				new ComponentButton(Bulkhead.class, trans.get("compaddbuttons.Bulkhead")),
 				//// Engine\nblock
-				new ComponentButton(EngineBlock.class, trans.get("compaddbuttons.Engineblock")));
+				new ComponentButton(EngineBlock.class, trans.get("compaddbuttons.Engineblock")),
+				//// Fuel\ntank
+				new ComponentButton(FuelTank.class, trans.get("compaddbuttons.Fueltank")));
 		
 		row++;
 		
