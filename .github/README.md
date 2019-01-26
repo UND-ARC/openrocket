@@ -1,19 +1,32 @@
-# New Repository Setup To-Do
+OpenRocket
+==========
 
-## Repository Settings
+Build Status - [ ![Build Status](https://travis-ci.org/openrocket/openrocket.png) ](https://travis-ci.org/openrocket/openrocket)
+------------
 
-- [x] Enable vulnerability alerts: **Settings** -> scroll to **Data Services** -> check **Vulnerability Alerts**
-- [x] Add any necessary branch protection rules: **Settings** -> **Branches** -> **Branch Protection Rules**
-  - [x] Master branch must require:
-    - [x] Pull request reviews before merging
-    - [x] Dismiss stale pull request approvals when new commits are pushed
-    - [x] Require status checks to pass before merging
-    - [x] Require branches be up to date before merging
-    - [x] Include administrators
+Overview
+--------
 
-## Metadata
+OpenRocket is a free, fully featured model rocket simulator that allows you to design and simulate your rockets before actually building and flying them.
 
-- [ ] Add basic information to this file `/.github/README.md` about what the repo is for (should be similar to `/docs/index.md`)
-- [x] If applicable, edit the basic bug report template: `/.github/ISSUE_TEMPLATE/bug.md`
-- [x] If applicable, edit the basic pull request template: `/.github/PULL_REQUEST_TEMPLATE.md`
-- [x] If applicable, edit the contributing guidelines: `/.github/contributing.md`
+The main features include:
+
+* Six-degree-of-freedom flight simulation
+* Automatic design optimization
+* Realtime simulated altitude, velocity and acceleration display
+* Staging and clustering support
+* Cross-platform (Java-based)
+
+Read more about it on the [OpenRocket Wiki](http://wiki.openrocket.info).
+
+License
+-------
+
+OpenRocket is an Open Source project licensed under the [GNU GPL](http://openrocket.sourceforge.net/license.html). This means that the software is free to use for whatever purposes, and the source code is also available for studying and extending.
+
+Contributing
+------------
+
+OpenRocket needs help to become even better. Implementing features, writing documentation and creating example designs are just a few ways of helping. If you are interested in helping make OpenRocket the best rocket simulator out there, please [click here for information on how to get involved!](http://openrocket.sourceforge.net/getinvolved.html)
+
+ 
