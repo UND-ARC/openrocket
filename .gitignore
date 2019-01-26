@@ -47,8 +47,6 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 # https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore
 
-.idea/
-
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
