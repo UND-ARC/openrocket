@@ -56,6 +56,15 @@ public class FuelTank extends MassObject {
         return mass + fuelQty;
     }
 
+    public void setComponentMass(double mass) {
+        mass = Math.max(mass, 0);
+        if (this.mass == mass) {
+            return;
+        }
+        this.mass = mass;
+        fireComponentChangeEvent(ComponentChangeEvent.MASS_CHANGE);
+    }
+
     private double estimateMassLeftAtTime(double time_burning) {
         double burned = this.burnRate * time_burning;
         double newFuelQty = this.initialFuelQty - burned;
