@@ -76,6 +76,51 @@ public class FuelTank extends MassObject {
         return this.fuelQty;
     }
 
+    public final FuelTank.FuelType getFuelType() {
+        mutex.verify();
+        return this.fuelType;
+    }
+
+    public void setFuelType(FuelTank.FuelType fuelType) {
+        mutex.verify();
+        if (this.fuelType == fuelType) {
+            return;
+        }
+        checkState();  // misha: what does this do?
+        this.fuelType = fuelType;
+        fireComponentChangeEvent(ComponentChangeEvent.NONFUNCTIONAL_CHANGE);
+    }
+
+    public double getFuelQty() {
+        mutex.verify();
+        return this.fuelQty;
+    }
+
+    public void setFuelQty(double fuelQty) {
+        mutex.verify();
+        if (this.fuelQty == fuelQty) {
+            return;
+        }
+        checkState();
+        this.fuelQty = fuelQty;
+        this.estimateMassLeftAtTime(0);
+    }
+
+    public double getBurnRate() {
+        mutex.verify();
+        return this.burnRate;
+    }
+
+    public void setBurnRate(double burnRate) {
+        mutex.verify();
+        if (this.burnRate == burnRate) {
+            return;
+        }
+        checkState();
+        this.burnRate = burnRate;
+        fireComponentChangeEvent(ComponentChangeEvent.NONFUNCTIONAL_CHANGE);
+    }
+
     @Override
     public String getComponentName() {
         return trans.get("FuelTank.FuelTank");

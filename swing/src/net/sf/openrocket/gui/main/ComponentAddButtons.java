@@ -59,6 +59,7 @@ import net.sf.openrocket.rocketcomponent.Transition;
 import net.sf.openrocket.rocketcomponent.TrapezoidFinSet;
 import net.sf.openrocket.rocketcomponent.TubeCoupler;
 import net.sf.openrocket.rocketcomponent.TubeFinSet;
+import net.sf.openrocket.rocketcomponent.FuelTank;
 import net.sf.openrocket.startup.Application;
 import net.sf.openrocket.startup.Preferences;
 import net.sf.openrocket.util.BugException;
