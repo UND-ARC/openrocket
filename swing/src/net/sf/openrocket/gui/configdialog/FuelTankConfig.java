@@ -16,6 +16,7 @@ import net.sf.openrocket.gui.adaptors.EnumModel;
 import net.sf.openrocket.gui.components.BasicSlider;
 import net.sf.openrocket.gui.components.UnitSelector;
 
+import net.sf.openrocket.rocketcomponent.position.AxialMethod;
 import net.sf.openrocket.unit.UnitGroup;
 import net.sf.openrocket.l10n.Translator;
 import net.sf.openrocket.startup.Application;
@@ -52,7 +53,7 @@ public class FuelTankConfig extends RocketComponentConfig {
         spin.setEditor(new SpinnerEditor(spin));
         panel.add(spin, "growx");
         panel.add(new UnitSelector(l), "growx");
-        panel.add(new BasicSlider(l.getSliderModel(0, 0.05, 0.5)), "w 1001p, wrap");
+        panel.add(new BasicSlider(l.getSliderModel(0, 0.05, 0.5)), "w 100lp, wrap");
 
         // Diameter
         panel.add(new JLabel(trans.get("FuelTank.lbl.diameter")));
@@ -61,7 +62,7 @@ public class FuelTankConfig extends RocketComponentConfig {
         spin.setEditor(new SpinnerEditor(spin));
         panel.add(spin, "growx");
         panel.add(new UnitSelector(diameter), "growx");
-        panel.add(new BasicSlider(diameter.getSliderModel(0, 0.05, 0.5)), "w 1001p, wrap");
+        panel.add(new BasicSlider(diameter.getSliderModel(0, 0.05, 0.5)), "w 100lp, wrap");
 
         // Tank mass
         panel.add(new JLabel(trans.get("FuelTank.lbl.tankmass")));
@@ -88,7 +89,25 @@ public class FuelTankConfig extends RocketComponentConfig {
         spin.setEditor(new SpinnerEditor(spin));
         panel.add(spin, "growx");
         panel.add(new UnitSelector(dr), "growx");
-        panel.add(new BasicSlider(dr.getSliderModel(0, 0.05, 0.5)), "w 1001p, wrap");
+        panel.add(new BasicSlider(dr.getSliderModel(0, 0.05, 0.5)), "w 100lp, wrap");
+
+        // Positioning
+        panel.add(new JLabel(trans.get("MassComponentCfg.lbl.PosRelativeto")));
+
+        final EnumModel<AxialMethod> methodModel = new EnumModel<AxialMethod>(component, "AxialMethod", AxialMethod.axialOffsetMethods);
+        final JComboBox<?> methodCombo = new JComboBox<AxialMethod>(methodModel);
+        panel.add(methodCombo, "spanx, growx, wrap");
+        panel.add(new JLabel(trans.get("MassComponentCfg.lbl.plus")), "right");
+        DoubleModel q = new DoubleModel(component, "AxialOffset", UnitGroup.UNITS_LENGTH);
+        spin = new JSpinner(q.getSpinnerModel());
+        spin.setEditor(new SpinnerEditor(spin));
+        panel.add(spin, "growx");
+
+        panel.add(new UnitSelector(q), "growx");
+        panel.add(new BasicSlider(q.getSliderModel(
+                new DoubleModel(component.getParent(), "Length", -1.0, UnitGroup.UNITS_NONE),
+                new DoubleModel(component.getParent(), "Length"))),
+                "w 100lp, wrap");
 
         // Add other tabs
         // Radial position
