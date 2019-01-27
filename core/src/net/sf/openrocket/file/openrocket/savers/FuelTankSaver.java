@@ -1,6 +1,7 @@
 package net.sf.openrocket.file.openrocket.savers;
 
 import java.util.List;
+import java.util.ArrayList;
 import net.sf.openrocket.rocketcomponent.FuelTank;
 
 public class FuelTankSaver extends InternalComponentSaver {
@@ -17,6 +18,18 @@ public class FuelTankSaver extends InternalComponentSaver {
         //elements.add("<packedinitqty>" + fuel.getInitialFuelQty() + "</packedinitqty>");
         elements.add("<packedburnrate>" + fuel.getBurnRate() + "</packedburnrate>");
 
+    }
+
+    private static final FuelTankSaver instance = new FuelTankSaver();
+
+    public static List<String> getElements(net.sf.openrocket.rocketcomponent.RocketComponent c) {
+        List<String> list = new ArrayList<String>();
+
+        list.add("<fueltank>");
+        instance.addParams(c, list);
+        list.add("</fueltank>");
+
+        return list;
     }
 
 }
