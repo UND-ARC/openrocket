@@ -22,6 +22,7 @@ import net.sf.openrocket.startup.Application;
 import net.sf.openrocket.rocketcomponent.FuelTank;
 import net.sf.openrocket.document.OpenRocketDocument;
 import net.sf.openrocket.rocketcomponent.RocketComponent;
+import org.jfree.ui.Spinner;
 
 public class FuelTankConfig extends RocketComponentConfig {
     private static final Translator trans = Application.getTranslator();
@@ -44,10 +45,28 @@ public class FuelTankConfig extends RocketComponentConfig {
                                 FuelTank.FuelType.RP1}));
         panel.add(typecombo, "spanx, growx, wrap");
 
+        // Length
+        panel.add(new JLabel(trans.get("FuelTank.lbl.length")));
+        DoubleModel l = new DoubleModel(component, "Length", UnitGroup.UNITS_LENGTH, 0);
+        JSpinner spin = new JSpinner(l.getSpinnerModel());
+        spin.setEditor(new SpinnerEditor(spin));
+        panel.add(spin, "growx");
+        panel.add(new UnitSelector(l), "growx");
+        panel.add(new BasicSlider(l.getSliderModel(0, 0.05, 0.5)), "w 1001p, wrap");
+
+        // Diameter
+        panel.add(new JLabel(trans.get("FuelTank.lbl.diameter")));
+        DoubleModel diameter = new DoubleModel(component, "Radius", UnitGroup.UNITS_LENGTH, 0);
+        spin = new JSpinner(diameter.getSpinnerModel());
+        spin.setEditor(new SpinnerEditor(spin));
+        panel.add(spin, "growx");
+        panel.add(new UnitSelector(diameter), "growx");
+        panel.add(new BasicSlider(diameter.getSliderModel(0, 0.05, 0.5)), "w 1001p, wrap");
+
         // Tank mass
         panel.add(new JLabel(trans.get("FuelTank.lbl.tankmass")));
         DoubleModel m  = new DoubleModel(component, "ComponentMass", UnitGroup.UNITS_MASS, 0);
-        JSpinner spin = new JSpinner(m.getSpinnerModel());
+        spin = new JSpinner(m.getSpinnerModel());
         spin.setEditor(new SpinnerEditor(spin));
         panel.add(spin, "growx");
         panel.add(new UnitSelector(m), "growx");
