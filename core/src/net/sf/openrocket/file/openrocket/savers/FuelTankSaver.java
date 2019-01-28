@@ -2,6 +2,8 @@ package net.sf.openrocket.file.openrocket.savers;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import net.sf.openrocket.rocketcomponent.FuelTank;
 
 public class FuelTankSaver extends MassObjectSaver {
@@ -17,6 +19,7 @@ public class FuelTankSaver extends MassObjectSaver {
         elements.add("<packedfuelqty>" + fuel.getFuelQty() + "</packedfuelqty>");
         //elements.add("<packedinitqty>" + fuel.getInitialFuelQty() + "</packedinitqty>");
         elements.add("<packedburnrate>" + fuel.getBurnRate() + "</packedburnrate>");
+        elements.add("<packedfueltype>" + fuel.getFuelType().name().toLowerCase(Locale.ENGLISH) + "</packedfueltype>");
 
 
     }

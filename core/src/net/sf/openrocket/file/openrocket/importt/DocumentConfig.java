@@ -357,6 +357,9 @@ class DocumentConfig {
 				Reflection.findMethod(FuelTank.class, "setFuelQty", double.class)));
 		setters.put("FuelTank:packedburnrate", new DoubleSetter(
 				Reflection.findMethod(FuelTank.class, "setBurnRate", double.class)));
+		setters.put("FuelTank:packedfueltype", new EnumSetter<FuelTank.FuelType>(
+				Reflection.findMethod(FuelTank.class, "setFuelType", FuelTank.FuelType.class),
+				FuelTank.FuelType.class));
 		
 		// ShockCord
 		setters.put("ShockCord:cordlength", new DoubleSetter(
