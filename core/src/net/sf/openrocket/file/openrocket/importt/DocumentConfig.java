@@ -6,44 +6,9 @@ import java.util.Locale;
 
 import net.sf.openrocket.material.Material;
 import net.sf.openrocket.preset.ComponentPreset;
-import net.sf.openrocket.rocketcomponent.AxialStage;
-import net.sf.openrocket.rocketcomponent.BodyComponent;
-import net.sf.openrocket.rocketcomponent.BodyTube;
-import net.sf.openrocket.rocketcomponent.Bulkhead;
-import net.sf.openrocket.rocketcomponent.CenteringRing;
-import net.sf.openrocket.rocketcomponent.DeploymentConfiguration;
+import net.sf.openrocket.rocketcomponent.*;
 import net.sf.openrocket.rocketcomponent.DeploymentConfiguration.DeployEvent;
-import net.sf.openrocket.rocketcomponent.EllipticalFinSet;
-import net.sf.openrocket.rocketcomponent.EngineBlock;
-import net.sf.openrocket.rocketcomponent.ExternalComponent;
 import net.sf.openrocket.rocketcomponent.ExternalComponent.Finish;
-import net.sf.openrocket.rocketcomponent.FinSet;
-import net.sf.openrocket.rocketcomponent.FreeformFinSet;
-import net.sf.openrocket.rocketcomponent.InnerTube;
-import net.sf.openrocket.rocketcomponent.LaunchLug;
-import net.sf.openrocket.rocketcomponent.MassComponent;
-import net.sf.openrocket.rocketcomponent.MassObject;
-import net.sf.openrocket.rocketcomponent.NoseCone;
-import net.sf.openrocket.rocketcomponent.Parachute;
-import net.sf.openrocket.rocketcomponent.ParallelStage;
-import net.sf.openrocket.rocketcomponent.PodSet;
-import net.sf.openrocket.rocketcomponent.RadiusRingComponent;
-import net.sf.openrocket.rocketcomponent.RailButton;
-import net.sf.openrocket.rocketcomponent.RecoveryDevice;
-import net.sf.openrocket.rocketcomponent.ReferenceType;
-import net.sf.openrocket.rocketcomponent.RingComponent;
-import net.sf.openrocket.rocketcomponent.Rocket;
-import net.sf.openrocket.rocketcomponent.RocketComponent;
-import net.sf.openrocket.rocketcomponent.ShockCord;
-import net.sf.openrocket.rocketcomponent.StageSeparationConfiguration;
-import net.sf.openrocket.rocketcomponent.Streamer;
-import net.sf.openrocket.rocketcomponent.StructuralComponent;
-import net.sf.openrocket.rocketcomponent.SymmetricComponent;
-import net.sf.openrocket.rocketcomponent.ThicknessRingComponent;
-import net.sf.openrocket.rocketcomponent.Transition;
-import net.sf.openrocket.rocketcomponent.TrapezoidFinSet;
-import net.sf.openrocket.rocketcomponent.TubeCoupler;
-import net.sf.openrocket.rocketcomponent.TubeFinSet;
 import net.sf.openrocket.util.BugException;
 import net.sf.openrocket.util.Color;
 import net.sf.openrocket.util.LineStyle;
@@ -88,6 +53,7 @@ class DocumentConfig {
 			constructors.put("shockcord", ShockCord.class.getConstructor(new Class<?>[0]));
 			constructors.put("parachute", Parachute.class.getConstructor(new Class<?>[0]));
 			constructors.put("streamer", Streamer.class.getConstructor(new Class<?>[0]));
+			constructors.put("fueltank", FuelTank.class.getConstructor(new Class<?>[0]));
 			
 			// Other
 			constructors.put("stage", AxialStage.class.getConstructor(new Class<?>[0]));
@@ -383,6 +349,17 @@ class DocumentConfig {
 		/*		setters.put("Transition:shape", new EnumSetter<Transition.Shape>(
 						Reflection.findMethod(Transition.class, "setType", Transition.Shape.class),
 						Transition.Shape.class));*/
+
+		// FuelTank
+		setters.put("FuelTank:packedmass", new DoubleSetter(
+				Reflection.findMethod(FuelTank.class, "setComponentMass", double.class)));
+		setters.put("FuelTank:packedfuelqty", new DoubleSetter(
+				Reflection.findMethod(FuelTank.class, "setFuelQty", double.class)));
+		setters.put("FuelTank:packedburnrate", new DoubleSetter(
+				Reflection.findMethod(FuelTank.class, "setBurnRate", double.class)));
+		setters.put("FuelTank:packedfueltype", new EnumSetter<FuelTank.FuelType>(
+				Reflection.findMethod(FuelTank.class, "setFuelType", FuelTank.FuelType.class),
+				FuelTank.FuelType.class));
 		
 		// ShockCord
 		setters.put("ShockCord:cordlength", new DoubleSetter(

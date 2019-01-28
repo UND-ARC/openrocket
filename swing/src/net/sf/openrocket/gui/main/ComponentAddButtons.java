@@ -59,6 +59,7 @@ import net.sf.openrocket.rocketcomponent.Transition;
 import net.sf.openrocket.rocketcomponent.TrapezoidFinSet;
 import net.sf.openrocket.rocketcomponent.TubeCoupler;
 import net.sf.openrocket.rocketcomponent.TubeFinSet;
+import net.sf.openrocket.rocketcomponent.FuelTank;
 import net.sf.openrocket.startup.Application;
 import net.sf.openrocket.startup.Preferences;
 import net.sf.openrocket.util.BugException;
@@ -155,7 +156,9 @@ public class ComponentAddButtons extends JPanel implements Scrollable {
 				//// Bulkhead
 				new ComponentButton(Bulkhead.class, trans.get("compaddbuttons.Bulkhead")),
 				//// Engine\nblock
-				new ComponentButton(EngineBlock.class, trans.get("compaddbuttons.Engineblock")));
+				new ComponentButton(EngineBlock.class, trans.get("compaddbuttons.Engineblock")),
+				//// Fuel\ntank
+				new ComponentButton(FuelTank.class, trans.get("compaddbuttons.Fueltank")));
 		
 		row++;
 		
