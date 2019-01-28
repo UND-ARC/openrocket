@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import net.sf.openrocket.rocketcomponent.FuelTank;
 
-public class FuelTankSaver extends InternalComponentSaver {
+public class FuelTankSaver extends MassObjectSaver {
 
     @Override
     protected void addParams(net.sf.openrocket.rocketcomponent.RocketComponent c,
@@ -17,6 +17,7 @@ public class FuelTankSaver extends InternalComponentSaver {
         elements.add("<packedfuelqty>" + fuel.getFuelQty() + "</packedfuelqty>");
         //elements.add("<packedinitqty>" + fuel.getInitialFuelQty() + "</packedinitqty>");
         elements.add("<packedburnrate>" + fuel.getBurnRate() + "</packedburnrate>");
+
 
     }
 
