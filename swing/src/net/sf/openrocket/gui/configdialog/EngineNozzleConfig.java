@@ -119,5 +119,12 @@ public class EngineNozzleConfig extends RocketComponentConfig {
         }
     }
 
+    private void updateEnabled() {
+        boolean e = ((EngineNozzle) component).getType().usesParameter();
+        shapeLabel.setEnabled(e);
+        shapeSpinner.setEnabled(e);
+        shapeSlider.setEnabled(e);
+    }
+
 
 }
