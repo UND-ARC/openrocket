@@ -25,6 +25,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import net.sf.openrocket.rocketcomponent.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,31 +36,6 @@ import net.sf.openrocket.gui.configdialog.ComponentConfigDialog;
 import net.sf.openrocket.gui.main.componenttree.ComponentTreeModel;
 import net.sf.openrocket.l10n.Translator;
 import net.sf.openrocket.logging.Markers;
-import net.sf.openrocket.rocketcomponent.AxialStage;
-import net.sf.openrocket.rocketcomponent.BodyComponent;
-import net.sf.openrocket.rocketcomponent.BodyTube;
-import net.sf.openrocket.rocketcomponent.Bulkhead;
-import net.sf.openrocket.rocketcomponent.CenteringRing;
-import net.sf.openrocket.rocketcomponent.EllipticalFinSet;
-import net.sf.openrocket.rocketcomponent.EngineBlock;
-import net.sf.openrocket.rocketcomponent.FreeformFinSet;
-import net.sf.openrocket.rocketcomponent.InnerTube;
-import net.sf.openrocket.rocketcomponent.LaunchLug;
-import net.sf.openrocket.rocketcomponent.MassComponent;
-import net.sf.openrocket.rocketcomponent.NoseCone;
-import net.sf.openrocket.rocketcomponent.Parachute;
-import net.sf.openrocket.rocketcomponent.ParallelStage;
-import net.sf.openrocket.rocketcomponent.PodSet;
-import net.sf.openrocket.rocketcomponent.RailButton;
-import net.sf.openrocket.rocketcomponent.Rocket;
-import net.sf.openrocket.rocketcomponent.RocketComponent;
-import net.sf.openrocket.rocketcomponent.ShockCord;
-import net.sf.openrocket.rocketcomponent.Streamer;
-import net.sf.openrocket.rocketcomponent.Transition;
-import net.sf.openrocket.rocketcomponent.TrapezoidFinSet;
-import net.sf.openrocket.rocketcomponent.TubeCoupler;
-import net.sf.openrocket.rocketcomponent.TubeFinSet;
-import net.sf.openrocket.rocketcomponent.FuelTank;
 import net.sf.openrocket.startup.Application;
 import net.sf.openrocket.startup.Preferences;
 import net.sf.openrocket.util.BugException;
@@ -158,7 +134,9 @@ public class ComponentAddButtons extends JPanel implements Scrollable {
 				//// Engine\nblock
 				new ComponentButton(EngineBlock.class, trans.get("compaddbuttons.Engineblock")),
 				//// Fuel\ntank
-				new ComponentButton(FuelTank.class, trans.get("compaddbuttons.Fueltank")));
+				new ComponentButton(FuelTank.class, trans.get("compaddbuttons.Fueltank")),
+				//// Engine\nNozzle
+				new ComponentButton(EngineNozzle.class, trans.get("compaddbuttons.Enginenozzle")));
 		
 		row++;
 		
