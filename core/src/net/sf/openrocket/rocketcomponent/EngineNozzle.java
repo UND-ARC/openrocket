@@ -539,7 +539,7 @@ public class EngineNozzle extends SymmetricComponent {
 
         // Privete fields of the shapes
         private final String name;
-        private final String transitionDesc;
+        private final String engineNozzleDesc;
         private final String noseconeDesc;
         private final boolean canClip;
 
@@ -553,7 +553,7 @@ public class EngineNozzle extends SymmetricComponent {
             this.name = name;
             this.canClip = canClip;
             this.noseconeDesc = noseconeDesc;
-            this.transitionDesc = transitionDesc;
+            this.engineNozzleDesc = transitionDesc;
         }
 
 
@@ -567,8 +567,8 @@ public class EngineNozzle extends SymmetricComponent {
         /**
          * Get a description of the Transition shape.
          */
-        public String getTransitionDescription() {
-            return transitionDesc;
+        public String getEngineNozzleDescription() {
+            return engineNozzleDesc;
         }
 
         /**

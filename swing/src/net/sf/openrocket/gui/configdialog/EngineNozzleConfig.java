@@ -52,7 +52,7 @@ public class EngineNozzleConfig extends RocketComponentConfig {
             public void actionPerformed(ActionEvent e) {
                 EngineNozzle.Shape s = (EngineNozzle.Shape) typeBox.getSelectedItem();
                 ((EngineNozzle) component).setType(s);
-                description.setText(PREDESC + s.getTransitionDescription());
+                description.setText(PREDESC + s.getEngineNozzleDescription());
                 updateEnabled();
             }
         });
@@ -117,6 +117,31 @@ public class EngineNozzleConfig extends RocketComponentConfig {
             checkbox.setText(trans.get("EngineNozzle.lbl.automatic"));
             panel.add(checkbox, "skip, span 2, wrap");
         }
+
+        {
+            panel.add(new JLabel(trans.get("EngineNozzle.lbl.wallthick")));
+            final DoubleModel thickModel = new DoubleModel(component, "Thickness", UnitGroup.UNITS_LENGTH, 0);
+            final JSpinner thickSpinner = new JSpinner(thickModel.getSpinnerModel());
+            thickSpinner.setEditor(new SpinnerEditor(thickSpinner));
+            panel.add(thickSpinner, "growx");
+            panel.add(new UnitSelector(thickModel), "growx");
+            panel.add(new BasicSlider(thickModel.getSliderModel(0, 0.01)), "w 100lp, wrap 0px");
+        }
+
+        JPanel panel2 = new JPanel(new MigLayout("ins 0"));
+        description = new DescriptionArea(5);
+        description.setText(PREDESC + ((EngineNozzle) component).getType().getEngineNozzleDescription());
+        panel2.add(description, "wmin 250lp, spanx, grpwx, wrap para");
+
+        panel2.add(materialPanel(Material.Type.BULK), "span, wrap");
+        panel.add(panel2, "cell 4 0, gapleft paragrap, alighy 0%, spany");
+
+        // tabs
+        tabbedPane.insertTab(trans.get("EngineNozzle.tab.General"), null, panel,
+                trans.get("EngineNozzle.lbl.Generalproperties"), 0);
+        tabbedPane.insertTab(trans.get("TransitionCfg.tab.Shoulder"), null, shoulderTab(),
+                trans.get("TransitionCfg.tab.Shoulderproperties"), 1);
+        tabbedPane.setSelectedIndex(0);
     }
 
     private void updateEnabled() {
