@@ -184,16 +184,6 @@ class MassObjectHandler extends PositionDependentHandler<MassObject> {
 	}
 	
 	/**
-	 * Set the relative position onto the component.  This cannot be done directly because setRelativePosition is not
-	 * public in all components.
-	 *
-	 * @param position the OpenRocket position
-	 */
-	public void setRelativePosition(RocketComponent.Position position) {
-		current.setRelativePosition(position);
-	}
-	
-	/**
 	 * Get the required type of material for this component.  Does not apply to MassComponents, but does apply to Shock
 	 * Cords.
 	 *

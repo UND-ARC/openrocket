@@ -9,6 +9,7 @@ import net.sf.openrocket.file.simplesax.PlainTextHandler;
 import net.sf.openrocket.material.Material;
 import net.sf.openrocket.rocketcomponent.RocketComponent;
 import net.sf.openrocket.rocketcomponent.TubeFinSet;
+
 import org.xml.sax.SAXException;
 
 import java.util.HashMap;
@@ -32,25 +33,14 @@ public class TubeFinSetHandler extends PositionDependentHandler<TubeFinSet> {
      * @throws IllegalArgumentException thrown if <code>c</code> is null
      */
     public TubeFinSetHandler(DocumentLoadingContext context, RocketComponent c, WarningSet warnings) throws IllegalArgumentException {
-        super(context);
-        if (c == null) {
-            throw new IllegalArgumentException("The parent component of a tube fin may not be null.");
-        }
-        tubeFin = new TubeFinSet();
-        if (isCompatible(c, TubeFinSet.class, warnings)) {
-                c.addChild(tubeFin);
-            }
-        }
-
-
-    /**
-   	 * Set the relative position onto the component.
-   	 *
-   	 * @param position  the OpenRocket position
-   	 */
-    @Override
-    protected void setRelativePosition(final RocketComponent.Position position) {
-        tubeFin.setRelativePosition(position);
+    	super(context);
+    	if (c == null) {
+    		throw new IllegalArgumentException("The parent component of a tube fin may not be null.");
+    	}
+    	tubeFin = new TubeFinSet();
+    	if (isCompatible(c, TubeFinSet.class, warnings)) {
+    		c.addChild(tubeFin);
+    	}
     }
 
     /**

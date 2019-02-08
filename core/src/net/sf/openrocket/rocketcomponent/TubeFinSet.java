@@ -7,12 +7,14 @@ import java.util.List;
 import net.sf.openrocket.l10n.Translator;
 import net.sf.openrocket.preset.ComponentPreset;
 import net.sf.openrocket.preset.ComponentPreset.Type;
+import net.sf.openrocket.rocketcomponent.position.AxialMethod;
+import net.sf.openrocket.rocketcomponent.position.AxialPositionable;
 import net.sf.openrocket.startup.Application;
 import net.sf.openrocket.util.Coordinate;
 import net.sf.openrocket.util.MathUtil;
 import net.sf.openrocket.util.Transformation;
 
-public class TubeFinSet extends ExternalComponent {
+public class TubeFinSet extends ExternalComponent implements AxialPositionable {
 	private static final Translator trans = Application.getTranslator();
 	
 	private final static double DEFAULT_RADIUS = 0.025;
@@ -45,7 +47,7 @@ public class TubeFinSet extends ExternalComponent {
 	 * i.e. fins are positioned at the bottom of the parent component.
 	 */
 	public TubeFinSet() {
-		super(RocketComponent.Position.BOTTOM);
+		super(AxialMethod.BOTTOM);
 		length = 0.10;
 	}
 	
@@ -166,6 +168,12 @@ public class TubeFinSet extends ExternalComponent {
 		return fins;
 	}
 	
+
+	@Override
+	public boolean isAfter(){ 
+		return false;
+	}
+	
 	/**
 	 * Sets the number of fins in the set.
 	 * @param n The number of fins, greater of equal to one.
@@ -216,15 +224,8 @@ public class TubeFinSet extends ExternalComponent {
 	}
 	
 	@Override
-	public void setRelativePosition(RocketComponent.Position position) {
-		super.setRelativePosition(position);
-		fireComponentChangeEvent(ComponentChangeEvent.BOTH_CHANGE);
-	}
-	
-	
-	@Override
-	public void setPositionValue(double value) {
-		super.setPositionValue(value);
+	public void setAxialMethod(AxialMethod position) {
+		super.setAxialMethod(position);
 		fireComponentChangeEvent(ComponentChangeEvent.BOTH_CHANGE);
 	}
 	
@@ -268,14 +269,9 @@ public class TubeFinSet extends ExternalComponent {
 		}
 		
 		// translate each to the center of mass.
-		final double hypot = getOuterRadius() + getBodyRadius();
-		final double finrotation = 2 * Math.PI / fins;
-		double angularoffset = 0.0;
 		double totalInertia = 0.0;
 		for (int i = 0; i < fins; i++) {
-			double offset = hypot * Math.cos(angularoffset);
-			totalInertia += inertia + MathUtil.pow2(offset);
-			angularoffset += finrotation;
+			totalInertia += inertia + MathUtil.pow2( this.axialOffset);
 		}
 		return totalInertia;
 	}
@@ -333,7 +329,7 @@ public class TubeFinSet extends ExternalComponent {
 		s = this.getParent();
 		while (s != null) {
 			if (s instanceof SymmetricComponent) {
-				double x = this.toRelative(new Coordinate(0, 0, 0), s)[0].x;
+				double x = this.getPosition().x;
 				return ((SymmetricComponent) s).getRadius(x);
 			}
 			s = s.getParent();

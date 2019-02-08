@@ -11,42 +11,37 @@ import javax.swing.JToggleButton;
 
 import net.miginfocom.swing.MigLayout;
 import net.sf.openrocket.l10n.Translator;
-import net.sf.openrocket.rocketcomponent.Configuration;
+import net.sf.openrocket.rocketcomponent.AxialStage;
+import net.sf.openrocket.rocketcomponent.ComponentChangeEvent;
+import net.sf.openrocket.rocketcomponent.FlightConfiguration;
+import net.sf.openrocket.rocketcomponent.Rocket;
+import net.sf.openrocket.rocketcomponent.RocketComponent;
 import net.sf.openrocket.startup.Application;
 import net.sf.openrocket.util.StateChangeListener;
 
 
+@SuppressWarnings("serial")
 public class StageSelector extends JPanel implements StateChangeListener {
+
 	private static final Translator trans = Application.getTranslator();
 	
-	private final Configuration configuration;
+	private final Rocket rocket;
 	
 	private List<JToggleButton> buttons = new ArrayList<JToggleButton>();
 	
-	public StageSelector(Configuration configuration) {
+	public StageSelector(Rocket _rkt) {
 		super(new MigLayout("gap 0!"));
-		this.configuration = configuration;
+		this.rocket = _rkt;
 		
-		JToggleButton button = new JToggleButton(new StageAction(0));
-		this.add(button);
-		buttons.add(button);
-		
-		updateButtons();
-		configuration.addChangeListener(this);
+		updateButtons( this.rocket.getSelectedConfiguration() );
 	}
 	
-	private void updateButtons() {
-		int stages = configuration.getStageCount();
-		if (buttons.size() == stages)
-			return;
-		
-		while (buttons.size() > stages) {
-			JToggleButton button = buttons.remove(buttons.size() - 1);
-			this.remove(button);
-		}
-		
-		while (buttons.size() < stages) {
-			JToggleButton button = new JToggleButton(new StageAction(buttons.size()));
+	private void updateButtons( final FlightConfiguration configuration ) {
+		buttons.clear();
+		this.removeAll();
+		for(AxialStage stage : configuration.getRocket().getStageList()){
+			JToggleButton button = new JToggleButton(new StageAction(stage));
+			button.setSelected(true);
 			this.add(button);
 			buttons.add(button);
 		}
@@ -54,58 +49,36 @@ public class StageSelector extends JPanel implements StateChangeListener {
 		this.revalidate();
 	}
 	
-	
-
-
 	@Override
-	public void stateChanged(EventObject e) {
-		updateButtons();
+	public void stateChanged(EventObject eo) {
+		Object source = eo.getSource();
+		if ((source instanceof Rocket) || (source instanceof AxialStage)) {
+			Rocket rkt = (Rocket) ((RocketComponent) source).getRoot();
+			updateButtons( rkt.getSelectedConfiguration() );
+		}
 	}
 	
-	
-	private class StageAction extends AbstractAction implements StateChangeListener {
-		private final int stage;
+	private class StageAction extends AbstractAction {
+		private final AxialStage stage;
 		
-		public StageAction(final int stage) {
+		public StageAction(final AxialStage stage) {
 			this.stage = stage;
-			configuration.addChangeListener(this);
-			stateChanged(null);
 		}
 		
 		@Override
 		public Object getValue(String key) {
 			if (key.equals(NAME)) {
-				//// Stage
-				return trans.get("StageAction.Stage") + " " + (stage + 1);
+				// Stage
+				return stage.getName();
 			}
 			return super.getValue(key);
 		}
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			configuration.setToStage(stage);
-			
-			//			boolean state = (Boolean)getValue(SELECTED_KEY);
-			//			if (state == true) {
-			//				// Was disabled, now enabled
-			//				configuration.setToStage(stage);
-			//			} else {
-			//				// Was enabled, check what to do
-			//				if (configuration.isStageActive(stage + 1)) {
-			//					configuration.setToStage(stage);
-			//				} else {
-			//					if (stage == 0)
-			//						configuration.setAllStages();
-			//					else 
-			//						configuration.setToStage(stage-1);
-			//				}
-			//			}
-			//			stateChanged(null);
+			rocket.getSelectedConfiguration().toggleStage(stage.getStageNumber());
+			rocket.fireComponentChangeEvent(ComponentChangeEvent.AEROMASS_CHANGE | ComponentChangeEvent.MOTOR_CHANGE );
 		}
 		
-		@Override
-		public void stateChanged(EventObject e) {
-			this.putValue(SELECTED_KEY, configuration.isStageActive(stage));
-		}
 	}
 }

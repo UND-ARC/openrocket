@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.sf.openrocket.logging.Markers;
+import net.sf.openrocket.rocketcomponent.RocketComponent;
 import net.sf.openrocket.unit.Unit;
 import net.sf.openrocket.unit.UnitGroup;
 import net.sf.openrocket.util.BugException;
@@ -64,6 +65,7 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 	 * This is still the design, but now extends AbstractSpinnerModel to allow other characters
 	 * to be entered so that fractional units and expressions can be used.
 	 */
+	@SuppressWarnings("serial")
 	public class ValueSpinnerModel extends AbstractSpinnerModel implements Invalidatable {
 		
 		private ExpressionParser parser = new ExpressionParser();
@@ -443,6 +445,7 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 	
 	////////////  Action model  ////////////
 	
+	@SuppressWarnings("serial")
 	private class AutomaticActionModel extends AbstractAction implements StateChangeListener, Invalidatable {
 		private boolean oldValue = false;
 		
@@ -548,7 +551,7 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 	 * The main model handles all values in SI units, i.e. no conversion is made within the model.
 	 */
 	
-	private final ChangeSource source;
+	private final Object source;
 	private final String valueName;
 	private final double multiplier;
 	
@@ -643,7 +646,7 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 	 * @param min Minimum value allowed (in SI units)
 	 * @param max Maximum value allowed (in SI units)
 	 */
-	public DoubleModel(ChangeSource source, String valueName, double multiplier, UnitGroup unit,
+	public DoubleModel(Object source, String valueName, double multiplier, UnitGroup unit,
 			double min, double max) {
 		this.source = source;
 		this.valueName = valueName;
@@ -654,6 +657,10 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 		
 		this.minValue = min;
 		this.maxValue = max;
+		
+		if(RocketComponent.class.isAssignableFrom(source.getClass())) {
+		    ((RocketComponent)source).addChangeListener(this);
+		}
 		
 		try {
 			getMethod = source.getClass().getMethod("get" + valueName);
@@ -689,41 +696,40 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 		
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, double multiplier, UnitGroup unit,
+	public DoubleModel(Object source, String valueName, double multiplier, UnitGroup unit,
 			double min) {
 		this(source, valueName, multiplier, unit, min, Double.POSITIVE_INFINITY);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, double multiplier, UnitGroup unit) {
+	public DoubleModel(Object source, String valueName, double multiplier, UnitGroup unit) {
 		this(source, valueName, multiplier, unit, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, UnitGroup unit,
+	public DoubleModel(Object source, String valueName, UnitGroup unit,
 			double min, double max) {
 		this(source, valueName, 1.0, unit, min, max);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, UnitGroup unit, double min) {
+	public DoubleModel(Object source, String valueName, UnitGroup unit, double min) {
 		this(source, valueName, 1.0, unit, min, Double.POSITIVE_INFINITY);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, UnitGroup unit) {
+	public DoubleModel(Object source, String valueName, UnitGroup unit) {
 		this(source, valueName, 1.0, unit, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName) {
+	public DoubleModel(Object source, String valueName) {
 		this(source, valueName, 1.0, UnitGroup.UNITS_NONE,
 				Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, double min) {
+	public DoubleModel(Object source, String valueName, double min) {
 		this(source, valueName, 1.0, UnitGroup.UNITS_NONE, min, Double.POSITIVE_INFINITY);
 	}
 	
-	public DoubleModel(ChangeSource source, String valueName, double min, double max) {
+	public DoubleModel(Object source, String valueName, double min, double max) {
 		this(source, valueName, 1.0, UnitGroup.UNITS_NONE, min, max);
 	}
-	
 	
 	
 	/**
@@ -880,7 +886,6 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 		
 		if (listeners.isEmpty()) {
 			if (source != null) {
-				source.addChangeListener(this);
 				lastValue = getValue();
 				lastAutomatic = isAutomatic();
 			}
@@ -909,9 +914,6 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 		checkState(false);
 		
 		listeners.remove(l);
-		if (listeners.isEmpty() && source != null) {
-			source.removeChangeListener(this);
-		}
 		log.trace(this + " removing listener (total " + listeners.size() + "): " + l);
 	}
 	
@@ -930,9 +932,6 @@ public class DoubleModel implements StateChangeListener, ChangeSource, Invalidat
 			log.warn("Invalidating " + this + " while still having listeners " + listeners);
 		}
 		listeners.clear();
-		if (source != null) {
-			source.removeChangeListener(this);
-		}
 		MemoryManagement.collectable(this);
 	}
 	

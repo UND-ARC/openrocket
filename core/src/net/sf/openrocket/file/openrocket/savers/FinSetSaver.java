@@ -12,8 +12,11 @@ public class FinSetSaver extends ExternalComponentSaver {
 		super.addParams(c, elements);
 		
 		net.sf.openrocket.rocketcomponent.FinSet fins = (net.sf.openrocket.rocketcomponent.FinSet) c;
-		elements.add("<fincount>" + fins.getFinCount() + "</fincount>");
-		elements.add("<rotation>" + (fins.getBaseRotation() * 180.0 / Math.PI) + "</rotation>");
+
+		// // this information is already saved as 'RingInstanceable' in RocktComponent
+		// elements.add("<fincount>" + fins.getFinCount() + "</fincount>");
+		// elements.add("<rotation>" + (fins.getBaseRotation() * 180.0 / Math.PI) + "</rotation>");
+
 		elements.add("<thickness>" + fins.getThickness() + "</thickness>");
 		elements.add("<crosssection>" + fins.getCrossSection().name().toLowerCase(Locale.ENGLISH)
 				+ "</crosssection>");
@@ -26,8 +29,8 @@ public class FinSetSaver extends ExternalComponentSaver {
 			elements.add("<tabheight>" + fins.getTabHeight() + "</tabheight>");
 			elements.add("<tablength>" + fins.getTabLength() + "</tablength>");
 			elements.add("<tabposition relativeto=\"" +
-					fins.getTabRelativePosition().name().toLowerCase(Locale.ENGLISH) + "\">" +
-					fins.getTabShift() + "</tabposition>");
+					fins.getTabOffsetMethod().name().toLowerCase(Locale.ENGLISH) + "\">" +
+					fins.getTabOffset() + "</tabposition>");
 			
 		}
 		

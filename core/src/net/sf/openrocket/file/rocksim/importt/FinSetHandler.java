@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.xml.sax.SAXException;
+
 import net.sf.openrocket.aerodynamics.WarningSet;
 import net.sf.openrocket.file.DocumentLoadingContext;
 import net.sf.openrocket.file.rocksim.RocksimCommonConstants;
@@ -21,12 +23,10 @@ import net.sf.openrocket.rocketcomponent.EllipticalFinSet;
 import net.sf.openrocket.rocketcomponent.ExternalComponent;
 import net.sf.openrocket.rocketcomponent.FinSet;
 import net.sf.openrocket.rocketcomponent.FreeformFinSet;
-import net.sf.openrocket.rocketcomponent.IllegalFinPointException;
 import net.sf.openrocket.rocketcomponent.RocketComponent;
 import net.sf.openrocket.rocketcomponent.TrapezoidFinSet;
+import net.sf.openrocket.rocketcomponent.position.AxialMethod;
 import net.sf.openrocket.util.Coordinate;
-
-import org.xml.sax.SAXException;
 
 /**
  * A SAX handler for Rocksim fin sets.  Because the type of fin may not be known first (in Rocksim file format, the fin
@@ -55,7 +55,7 @@ class FinSetHandler extends AbstractElementHandler {
 	/**
 	 * The OpenRocket Position which gives the absolute/relative positioning for location.
 	 */
-	private RocketComponent.Position position;
+	private AxialMethod axialMethod;
 	/**
 	 * The number of fins in this fin set.
 	 */
@@ -68,10 +68,13 @@ class FinSetHandler extends AbstractElementHandler {
 	 * The length of the tip chord.
 	 */
 	private double tipChord = 0.0d;
+	
 	/**
 	 * The length of the mid-chord (aka height).
 	 */
+	@SuppressWarnings("unused")  // stored from file, but not used.
 	private double midChordLen = 0.0d;
+	
 	/**
 	 * The distance of the leading edge from root to top.
 	 */
@@ -180,7 +183,7 @@ class FinSetHandler extends AbstractElementHandler {
 				location = Double.parseDouble(content) / RocksimCommonConstants.ROCKSIM_TO_OPENROCKET_LENGTH;
 			}
 			if (RocksimCommonConstants.LOCATION_MODE.equals(element)) {
-				position = RocksimLocationMode.fromCode(Integer.parseInt(content)).asOpenRocket();
+				axialMethod = RocksimLocationMode.fromCode(Integer.parseInt(content)).asOpenRocket();
 			}
 			if (RocksimCommonConstants.FIN_COUNT.equals(element)) {
 				finCount = Integer.parseInt(content);
@@ -300,11 +303,8 @@ class FinSetHandler extends AbstractElementHandler {
 		else if (shapeCode == 2) {
 			
 			result = new FreeformFinSet();
-			try {
-				((FreeformFinSet) result).setPoints(toCoordinates(pointList, warnings));
-			} catch (IllegalFinPointException e) {
-				warnings.add("Illegal fin point set. " + e.getMessage() + " Ignoring.");
-			}
+			((FreeformFinSet) result).setPoints(toCoordinates(pointList, warnings));
+			
 		}
 		else {
 			return null;
@@ -314,14 +314,15 @@ class FinSetHandler extends AbstractElementHandler {
 		result.setFinCount(finCount);
 		result.setFinish(finish);
 		//All TTW tabs in Rocksim are relative to the front of the fin.
-		result.setTabRelativePosition(FinSet.TabRelativePosition.FRONT);
+		result.setTabOffsetMethod( AxialMethod.TOP);
 		result.setTabHeight(tabDepth);
 		result.setTabLength(tabLength);
-		result.setTabShift(taboffset);
+		result.setTabOffset(taboffset);
 		result.setBaseRotation(radialAngle);
 		result.setCrossSection(convertTipShapeCode(tipShapeCode));
-		result.setRelativePosition(position);
-		PositionDependentHandler.setLocation(result, position, location);
+		result.setAxialMethod(axialMethod);
+		result.setAxialOffset(location);
+
 		return result;
 		
 	}
@@ -329,16 +330,16 @@ class FinSetHandler extends AbstractElementHandler {
 	/**
 	 * Convert a Rocksim string that represents fin plan points into an array of OpenRocket coordinates.
 	 *
-	 * @param pointList a comma and pipe delimited string of X,Y coordinates from Rocksim.  This is of the format:
+	 * @param newPointList a comma and pipe delimited string of X,Y coordinates from Rocksim.  This is of the format:
 	 *                  <pre>x0,y0|x1,y1|x2,y2|... </pre>
 	 * @param warnings  the warning set to convey incompatibilities to the user
 	 *
 	 * @return an array of OpenRocket Coordinates
 	 */
-	private Coordinate[] toCoordinates(String pointList, WarningSet warnings) {
+	private Coordinate[] toCoordinates(String newPointList, WarningSet warnings) {
 		List<Coordinate> result = new ArrayList<Coordinate>();
-		if (pointList != null && pointList.length() > 0) {
-			String[] points = pointList.split("\\Q|\\E");
+		if (newPointList != null && newPointList.length() > 0) {
+			String[] points = newPointList.split("\\Q|\\E");
 			for (String point : points) {
 				String[] aPoint = point.split(",");
 				try {

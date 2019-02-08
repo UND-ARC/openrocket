@@ -9,7 +9,7 @@ import net.sf.openrocket.file.simplesax.PlainTextHandler;
 import net.sf.openrocket.material.Material;
 import net.sf.openrocket.rocketcomponent.BodyTube;
 import net.sf.openrocket.rocketcomponent.InnerTube;
-import net.sf.openrocket.rocketcomponent.RocketComponent;
+
 import org.junit.Assert;
 
 import java.util.HashMap;
@@ -116,20 +116,6 @@ public class InnerBodyTubeHandlerTest extends RocksimTestBase {
 
         handler.closeElement("Name", attributes, "Test Name", warnings);
         Assert.assertEquals("Test Name", component.getName());
-    }
-    
-    /**
-     * Method: setRelativePosition(RocketComponent.Position position)
-     *
-     * @throws Exception thrown if something goes awry
-     */
-    @org.junit.Test
-    public void testSetRelativePosition() throws Exception {
-        BodyTube tube = new BodyTube();
-        InnerBodyTubeHandler handler = new InnerBodyTubeHandler(null, tube, new WarningSet());
-        InnerTube component = (InnerTube) getField(handler, "bodyTube");
-        handler.setRelativePosition(RocketComponent.Position.ABSOLUTE);
-        Assert.assertEquals(RocketComponent.Position.ABSOLUTE, component.getRelativePosition());
     }
 
     /**
