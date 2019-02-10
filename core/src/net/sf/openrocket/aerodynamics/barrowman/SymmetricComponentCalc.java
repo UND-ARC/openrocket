@@ -7,10 +7,7 @@ import net.sf.openrocket.aerodynamics.BarrowmanCalculator;
 import net.sf.openrocket.aerodynamics.FlightConditions;
 import net.sf.openrocket.aerodynamics.Warning;
 import net.sf.openrocket.aerodynamics.WarningSet;
-import net.sf.openrocket.rocketcomponent.BodyTube;
-import net.sf.openrocket.rocketcomponent.RocketComponent;
-import net.sf.openrocket.rocketcomponent.SymmetricComponent;
-import net.sf.openrocket.rocketcomponent.Transition;
+import net.sf.openrocket.rocketcomponent.*;
 import net.sf.openrocket.util.BugException;
 import net.sf.openrocket.util.Coordinate;
 import net.sf.openrocket.util.LinearInterpolator;
@@ -69,7 +66,7 @@ public class SymmetricComponentCalc extends RocketComponentCalc {
 			shape = ((Transition) component).getType();
 			param = ((Transition) component).getShapeParameter();
 			frontalArea = Math.abs(Math.PI * (foreRadius * foreRadius - aftRadius * aftRadius));
-			
+
 			double r = component.getRadius(0.99 * length);
 			sinphi = (aftRadius - r) / MathUtil.hypot(aftRadius - r, 0.01 * length);
 		} else {

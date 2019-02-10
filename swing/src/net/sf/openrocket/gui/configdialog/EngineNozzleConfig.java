@@ -52,7 +52,7 @@ public class EngineNozzleConfig extends RocketComponentConfig {
             public void actionPerformed(ActionEvent e) {
                 EngineNozzle.Shape s = (EngineNozzle.Shape) typeBox.getSelectedItem();
                 ((EngineNozzle) component).setType(s);
-                description.setText(PREDESC + s.getEngineNozzleDescription());
+                description.setText(PREDESC + s.getTransitionDescription());
                 updateEnabled();
             }
         });
@@ -130,7 +130,7 @@ public class EngineNozzleConfig extends RocketComponentConfig {
 
         JPanel panel2 = new JPanel(new MigLayout("ins 0"));
         description = new DescriptionArea(5);
-        description.setText(PREDESC + ((EngineNozzle) component).getType().getEngineNozzleDescription());
+        description.setText(PREDESC + ((EngineNozzle) component).getType().getTransitionDescription());
         panel2.add(description, "wmin 250lp, spanx, grpwx, wrap para");
 
         panel2.add(materialPanel(Material.Type.BULK), "span, wrap");
