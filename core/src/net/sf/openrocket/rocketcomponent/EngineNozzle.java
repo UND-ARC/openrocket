@@ -35,10 +35,10 @@ public class EngineNozzle extends Transition {
         this.foreRadius = DEFAULT_RADIUS;
         this.aftRadius = DEFAULT_RADIUS;
         this.length = DEFAULT_RADIUS * 3;
-        this.autoForeRadius = true;
+        this.autoForeRadius = false;
         this.autoAftRadius = true;
-        this.type = Shape.CONICAL;
-        this.shapeParameter = 0;
+        this.type = Shape.PARABOLIC;
+        this.shapeParameter = 1;
         this.clipped = true;
     }
 
