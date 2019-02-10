@@ -66,7 +66,7 @@ public class EngineNozzleConfig extends RocketComponentConfig {
             // shape parameter
             this.shapeLabel = new JLabel(trans.get("EngineNozzle.lbl.Shapeparam"));
             panel.add(shapeLabel);
-            updateEnabled();
+            //updateEnabled();
         }
 
         {
@@ -97,7 +97,7 @@ public class EngineNozzleConfig extends RocketComponentConfig {
             foreRadiusSpinner.setEditor(new SpinnerEditor(foreRadiusSpinner));
             panel.add(foreRadiusSpinner, "growx");
             panel.add(new UnitSelector(foreRadiusModel), "growx");
-            panel.add(new BasicSlider(foreRadiusModel.getSliderModel(0, 0.04, 02)), "w 100lp, wrap 0px");
+            panel.add(new BasicSlider(foreRadiusModel.getSliderModel(0, 0.04, 0.2)), "w 100lp, wrap 0px");
 
             final JCheckBox checkbox = new JCheckBox(foreRadiusModel.getAutomaticAction());
             checkbox.setText(trans.get("EngineNozzle.lbl.automatic"));
@@ -111,7 +111,7 @@ public class EngineNozzleConfig extends RocketComponentConfig {
             aftRadiusSpinner.setEditor(new SpinnerEditor(aftRadiusSpinner));
             panel.add(aftRadiusSpinner, "growx");
             panel.add(new UnitSelector(aftRadiusModel), "growx");
-            panel.add(new BasicSlider(aftRadiusModel.getSliderModel(0, 0.04, 0.)), "w 100lp, wrap 0px");
+            panel.add(new BasicSlider(aftRadiusModel.getSliderModel(0, 0.04, 0.5)), "w 100lp, wrap 0px");
 
             final JCheckBox checkbox = new JCheckBox(aftRadiusModel.getAutomaticAction());
             checkbox.setText(trans.get("EngineNozzle.lbl.automatic"));
@@ -131,10 +131,10 @@ public class EngineNozzleConfig extends RocketComponentConfig {
         JPanel panel2 = new JPanel(new MigLayout("ins 0"));
         description = new DescriptionArea(5);
         description.setText(PREDESC + ((EngineNozzle) component).getType().getTransitionDescription());
-        panel2.add(description, "wmin 250lp, spanx, grpwx, wrap para");
+        panel2.add(description, "wmin 250lp, spanx, growx, wrap para");
 
         panel2.add(materialPanel(Material.Type.BULK), "span, wrap");
-        panel.add(panel2, "cell 4 0, gapleft paragrap, alighy 0%, spany");
+        panel.add(panel2, "cell 4 0, gapleft paragraph, aligny 0%, spany");
 
         // tabs
         tabbedPane.insertTab(trans.get("EngineNozzle.tab.General"), null, panel,
