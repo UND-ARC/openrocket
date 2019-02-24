@@ -8,7 +8,8 @@ import net.sf.openrocket.rocketcomponent.NoseCone;
 import net.sf.openrocket.rocketcomponent.Transition;
 
 
-public class TransitionSaver extends SymmetricComponentSaver {
+public class
+TransitionSaver extends SymmetricComponentSaver {
 	
 	private static final TransitionSaver instance = new TransitionSaver();
 	
