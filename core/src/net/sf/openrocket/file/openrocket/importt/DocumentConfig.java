@@ -41,6 +41,7 @@ class DocumentConfig {
 			constructors.put("tubefinset", TubeFinSet.class.getConstructor(new Class<?>[0]));
 			constructors.put("launchlug", LaunchLug.class.getConstructor(new Class<?>[0]));
 			constructors.put("railbutton", RailButton.class.getConstructor(new Class<?>[0]));
+			constructors.put("enginenozzle", EngineNozzle.class.getConstructor(new Class<?>[0]));
 			
 			// Internal components
 			constructors.put("engineblock", EngineBlock.class.getConstructor(new Class<?>[0]));
@@ -201,6 +202,9 @@ class DocumentConfig {
 		setters.put("NoseCone:foreshoulderlength", null);
 		setters.put("NoseCone:foreshoulderthickness", null);
 		setters.put("NoseCone:foreshouldercapped", null);
+
+		// Engine Nozzle -- pretty much just transition?
+		// Is anything needed here??
 		
 		// FinSet
 		setters.put("FinSet:fincount", new IntSetter(
